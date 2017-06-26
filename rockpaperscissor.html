@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Pierre | Feuille | Ciseaux</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="rockpaperscissor.css">
+    <script src="rockpaperscissor.js" charset="utf-8"></script>
+  </head>
+  <body onload="init();">
+    <main>
+      <header id="computer">
+        <h2>Computer</h2>
+        <p class='score' id="computerScore">
+          0
+        </p>
+        <ul class="choices">
+          <li class="choice" id="c2"></li>
+          <li class="choice" id="c1"></li>
+          <li class="choice" id="c0"></li>
+        </ul>
+
+      </header>
+      <footer id="user">
+        <h2>User</h2>
+        <p class='score' id="userScore">
+          0
+        </p>
+        <ul class="choices">
+          <li class="choice" id="u0"></li>
+          <li class="choice" id="u1"></li>
+          <li class="choice" id="u2"></li>
+        </ul>
+
+      </footer>
+    </main>
+    <aside id="info">
+      <div id="games">0</div>
+      <div id="status" class="">
+      </div>
+    </aside>
+  </body>
+</html>
