@@ -62,67 +62,68 @@ var init = function() {
     element.setAttribute('class', classes);
   };
 
-  var vSwitch = function(sw) {
-    var classes = document.getElementById('status').getAttribute('class');
+  var updateScore = function(winner, loser, draw) {
+    if(!draw) {
+      var winH = document.getElementById(winner).clientHeight,
+        loseH = document.getElementById(loser).clientHeight,
+        totH = winH + loseH,
+        twoPercent = parseInt(totH * 0.02);
 
-    classes = sw === 1 ? 'visible' : classes.replace(' visible', '');
+      score[winner]++;
 
-    document.getElementById('status').setAttribute('class', classes);
-    console.log('c', document.getElementById('status').getAttribute('class'));
-  };
+      if ((winH > totH / 5) && (loseH > totH / 5)) {
+        winH += twoPercent;
+        loseH -= twoPercent;
 
-  var updateScore = function(winner, loser) {
-    var winH = document.getElementById(winner).clientHeight,
-      loseH = document.getElementById(loser).clientHeight,
-      totH = winH + loseH,
-      twoPercent = parseInt(totH * 0.02);
+        winH = winH / totH * 100 + 'vh';
+        loseH = loseH / totH * 100 + 'vh';
 
-    score[winner]++;
-
-    document.getElementById(winner + 'Score').innerText = score[winner];
-
-    if ((winH > totH / 5) && (loseH > totH / 5)) {
-      winH += twoPercent;
-      loseH -= twoPercent;
-
-      winH = winH / totH * 100 + 'vh';
-      loseH = loseH / totH * 100 + 'vh';
-
-      document.getElementById(winner).style.height = winH;
-      document.getElementById(loser).style.height = loseH;
+        document.getElementById(winner).style.height = winH;
+        document.getElementById(loser).style.height = loseH;
+      }
     }
+    score.games++;
+    document.getElementById(winner + 'Score').innerHTML = score[winner] + '<small>/' + score.games + '</small>';
+    document.getElementById(loser + 'Score').innerHTML = score[loser] + '<small>/' + score.games + '</small>';
 
   }
 
   var updateStatus = function(result) {
-    vSwitch(0);
     switch (result) {
-      case "waiting":
-        vSwitch(1);
-        document.getElementById('status').innerHTML = '';
-        document.getElementById('status').style.backgroundImage = 'url("https://s3.postimg.org/5bdmnf82b/dots.gif")';
-        score.games++;
-        document.getElementById('games').innerText = score.games;
-        vSwitch(0);
-        break;
       case "computer":
-        document.getElementById('status').innerText = 'l\'ordinateur gagne !';
-        document.getElementById('status').style.backgroundImage = 'none';
-        updateScore('computer', 'user');
+        updateScore('computer', 'user', false);
+        showOff('computer', 'user');
         break;
       case "user":
-        document.getElementById('status').innerText = 'vous gagnez !';
-        document.getElementById('status').style.backgroundImage = 'none';
-        updateScore('user', 'computer');
+        updateScore('user', 'computer', false);
+        showOff('user', 'computer');
         break;
       case "draw":
-        document.getElementById('status').innerText = 'personne ne gagne...';
-        document.getElementById('status').style.backgroundImage = 'none';
         score.draws++;
+        updateScore('user', 'computer', true);
         break;
     }
-    vSwitch(1);
   };
+
+  var showOff(winner, loser) {
+    document.getElementById(winner)
+            .getElementsByClassName('selected')
+            .style.animation = 'win .5s ease-in-out';
+
+    document.getElementById(loser)
+            .getElementsByClassName('selected')
+            .style.animation = 'lose .5s ease-in-out';
+
+    setTimeout(function() {
+      document.getElementById(winner)
+              .getElementsByClassName('selected')
+              .style.animation = '';
+
+      document.getElementById(loser)
+              .getElementsByClassName('selected')
+              .style.animation = '';
+    }, 500);
+  }
 
   // game functions
 
@@ -156,7 +157,6 @@ var init = function() {
     activate('');
     resetSelection(getChoices('computer'));
     userChoice = getUserChoice(id);
-    updateStatus('waiting');
     setTimeout(
       function() {
         computerChoice = getComputerChoice();
