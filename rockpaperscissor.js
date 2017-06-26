@@ -92,11 +92,11 @@ var init = function() {
     switch (result) {
       case "computer":
         updateScore('computer', 'user', false);
-        showOff('computer', 'user');
+        //showOff('computer', 'user');
         break;
       case "user":
         updateScore('user', 'computer', false);
-        showOff('user', 'computer');
+        //showOff('user', 'computer');
         break;
       case "draw":
         score.draws++;
@@ -104,27 +104,19 @@ var init = function() {
         break;
     }
   };
-
+  /*
   var showOff(winner, loser) {
-    document.getElementById(winner)
-            .getElementsByClassName('selected')
-            .style.animation = 'win .5s ease-in-out';
+    document.getElementById(winner).getElementsByClassName('selected').style.animation = 'win .5s ease-in-out';
 
-    document.getElementById(loser)
-            .getElementsByClassName('selected')
-            .style.animation = 'lose .5s ease-in-out';
+    document.getElementById(loser).getElementsByClassName('selected').style.animation = 'lose .5s ease-in-out';
 
     setTimeout(function() {
-      document.getElementById(winner)
-              .getElementsByClassName('selected')
-              .style.animation = '';
+      document.getElementById(winner).getElementsByClassName('selected').style.animation = '';
 
-      document.getElementById(loser)
-              .getElementsByClassName('selected')
-              .style.animation = '';
+      document.getElementById(loser).getElementsByClassName('selected').style.animation = '';
     }, 500);
-  }
-
+  };
+  */
   // game functions
 
   // getUserChoice function
