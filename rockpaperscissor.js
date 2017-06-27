@@ -1,5 +1,5 @@
 // Execute on document load
-var init = function() {
+window.onload = function() {
 
   var odds = [
     // user choice is 'pierre'

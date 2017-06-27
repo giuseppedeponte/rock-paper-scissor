@@ -1,0 +1,36 @@
+{
+  "name": "rock-paper-scissor",
+  "version": "0.0.1",
+  "description": "Rock-Paper-Scissor game for the browser",
+  "main": "rockpaperscissor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giuseppedeponte/rock-paper-scissor.git"
+  },
+  "keywords": [
+    "rock",
+    "paper",
+    "scissor",
+    "rock-paper-scissor",
+    "javascript"
+  ],
+  "author": "Giuseppe De Ponte",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/giuseppedeponte/rock-paper-scissor/issues"
+  },
+  "homepage": "https://github.com/giuseppedeponte/rock-paper-scissor#readme",
+  "devDependencies": {
+    "eslint": "^4.1.1",
+    "eslint-config-google": "^0.8.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "google"
+    ]
+  }
+}
