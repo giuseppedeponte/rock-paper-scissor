@@ -1,4 +1,4 @@
-// Execute on document load
+/*global window*/
 window.onload = function() {
 
   var odds = [
