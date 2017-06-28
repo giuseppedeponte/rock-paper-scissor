@@ -31,6 +31,12 @@
     "extends": [
       "eslint:recommended",
       "google"
-    ]
+    ],
+    "env": {
+      "browser": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 5
+    }
   }
 }
