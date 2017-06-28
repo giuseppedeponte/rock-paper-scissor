@@ -1,29 +1,46 @@
 /* eslint no-var: "off" */
+
 window.onload = function() {
+/**
+ * An array describing the possible outcomes of each choice
+ * Each line represents a user choice (in display order)
+ * Each column represents a computer choice (in the same order)
+ * The strings inside the array represents the outcome of each combination
+ * Example odds[0][2] means the user picked 'rock' and
+ * the computer picked 'paper' (computer wins, obviously !).
+ */
   var odds = [
-    // user choice is 'pierre'
+    // user choice is 'rock'
     ['draw', 'computer', 'user'],
-    // user choice is 'feuille'
+    // user choice is 'paper'
     ['user', 'draw', 'computer'],
-    // user choice is 'ciseaux'
+    // user choice is 'scissor'
     ['computer', 'user', 'draw'],
   ];
 
+/**
+ * Object to keep track of the game score
+ */
   var score = {
     'computer': 0,
     'user': 0,
     'draws': 0,
     'games': 0,
   };
-
-
-  // helper functions
-
+/**
+ * Function that returns the list of a player choice html element
+ * @return {HTMLCollection} - a collection of the chosen div 'li' elements
+ * @param {string} player - the id of the parent element: 'computer' or 'user'.
+ */
   var getChoices = function(player) {
     return document.getElementById(player)
                    .getElementsByTagName('li');
   };
-
+/**
+ * Function to remove the 'selected' CSS class from list elements
+ * @return {undefined}
+ * @param {HTMLCollection} choices - the collection of list elements
+ */
   var resetSelection = function(choices) {
     var classes;
     var i = 0;
@@ -38,7 +55,13 @@ window.onload = function() {
       i++;
     }
   };
-
+/**
+ * Function to add the 'selected' CSS class to a list element
+ * @return {undefined}
+ * @param {string} id - the id of the selected li element - ex. 'c2', 'u1'
+ * First character of the id is the player initial, the second is the choice
+ * index number (c = computer, u = user / 1 = rock, 2 = paper, 3 = scissor).
+ */
   var selectElement = function(id) {
     var choices = id[0] === 'c'
                   ? getChoices('computer')
@@ -56,7 +79,16 @@ window.onload = function() {
 
     element.setAttribute('class', classes);
   };
-
+/**
+ * Function to update and display the score after each games
+ * Updates the score object and score HTML elements
+ * Makes the winner parent element bigger and shrinks the loser one
+ * (but will prevent loser to fall under 20% of page height)
+ * @return {undefined}
+ * @param {string} winner - 'computer' or 'user'
+ * @param {string} loser - 'user' or 'computer'
+ * @param {boolean} draw - true if game is a draw (the 1st part is the skipped)
+ */
   var updateScore = function(winner, loser, draw) {
     if (!draw) {
       var winH = document.getElementById(winner).clientHeight;
@@ -93,7 +125,12 @@ window.onload = function() {
                      + score.games
                      + '</small>';
   };
-
+/**
+ * Function to find out who wins and who lose unless game is a draw.
+ * Calls updateScore and showOff or shake functions accordingly.
+ * @param {string} result - The string selected from the odds array depending
+ * on user and computer choice.
+ */
   var updateStatus = function(result) {
     switch (result) {
       case 'computer':
@@ -112,6 +149,11 @@ window.onload = function() {
     }
   };
 
+/**
+ * A function to make add the 'draw' CSS class to the selected list elements
+ * and make them shake (with CSS animation).
+ * Then removes the 'draw' class after .5 seconds.
+ */
   var shake = function() {
     document
         .getElementById('computer')
@@ -135,7 +177,14 @@ window.onload = function() {
           .setAttribute('class', 'choice selected');
     }, 500);
   };
-
+  /**
+   * A function to make add the 'winner' and 'loser' CSS classes
+   * to the selected list elements and make them grow or shrinks
+   * accordingly (with CSS animation).
+   * Then removes the 'winner' and 'loser' classes after .5 seconds.
+   * @param {string} winner - 'computer' or 'user'
+   * @param {string} loser - 'user' or 'computer'
+   */
   var showOff = function(winner, loser) {
     document
         .getElementById(winner)
@@ -159,22 +208,31 @@ window.onload = function() {
           .setAttribute('class', 'choice selected');
     }, 500);
   };
-
-  // game functions
-
-  // getUserChoice function
+/**
+ * Function to extract the user choice index number from the selected element id
+ * Add the 'selected' CSS class to the chosen list element.
+ * @param {string} id - the selected element id
+ * @return {number} - the index of the user choice in the odds array
+ */
   var getUserChoice = function(id) {
     selectElement(id);
     return id.substr(1);
   };
-
-  // getComputerChoice function
+/**
+ * A function to make the computer choose an option randomly
+ * Add the 'selected' CSS class to the chosen list element.
+ * @return {string} - The id of the chosen option list element
+ */
   var getComputerChoice = function() {
     var choice = parseInt(Math.random() * 2.9);
     selectElement('c' + choice);
     return choice;
   };
-
+/**
+ * Function to toggle the onclick and ontouchstart event callback
+ * from the choice list elements.
+ * @param {function} f - the play function
+ */
   var activate = function(f) {
     var userChoices = getChoices('user');
     var c = 0;
@@ -185,7 +243,19 @@ window.onload = function() {
       }
     }
   };
-
+/**
+ * Function that is called when the user clicks or touches a list element,
+ * launching a new game:
+ * Gets the choice id;
+ * remove the onclick callback during the game
+ * remove all 'selected' CSS classes
+ * add a timeout (the computer thinks a bit before picking...)
+ * get the computer choice
+ * get the result of the game
+ * display the game result and updates the score
+ * reset all 'selected' CSS classes
+ * reattach the play function to the onclick and ontouchstart events
+ */
   var play = function() {
     var id = this.getAttribute('id');
     var userChoice;
