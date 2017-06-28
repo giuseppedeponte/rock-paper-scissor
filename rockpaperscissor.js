@@ -32,7 +32,7 @@ window.onload = function() {
 
       classes = classes.indexOf('selected') === -1
                 ? classes
-                : classes.replace('selected', '');
+                : classes.replace(' selected', '');
 
       choices[i].setAttribute('class', classes);
       i++;
@@ -181,6 +181,7 @@ window.onload = function() {
     for ( c in userChoices ) {
       if ( {}.hasOwnProperty.call(userChoices, c) ) {
         userChoices[c].onclick = f;
+        userChoices[c].ontouchstart = f;
       }
     }
   };
